@@ -50,8 +50,8 @@ const Hero = () => {
           <div className="relative">
             <div className="relative z-10 bg-white rounded-3xl shadow-2xl p-8 transform rotate-3 hover:rotate-0 transition-transform duration-500">
               <img 
-                src="https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=500&h=400&fit=crop" 
-                alt="Homemade mouth freshener" 
+                src="/lovable-uploads/e40b23ed-c309-4e40-9193-935d8bb0adbc.png" 
+                alt="Natural mouth freshener ingredients and spices" 
                 className="w-full h-80 object-cover rounded-2xl"
               />
               <div className="absolute -top-4 -right-4 bg-emerald-500 text-white px-4 py-2 rounded-full font-semibold shadow-lg">
