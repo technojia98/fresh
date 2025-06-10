@@ -13,13 +13,13 @@ const Header = ({
     getTotalItems
   } = useCart();
   return <header className="fixed top-0 w-full bg-white bg-opacity-95 backdrop-blur-md shadow-lg z-50 transition-all duration-300">
-      <div className="container mx-auto px-4 py-4 bg-slate-950">
+      <div className="container mx-auto px-4 py-4 bg-slate-50">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center space-x-2 group">
             <div className="bg-emerald-600 p-2 rounded-full transition-all duration-300 group-hover:bg-emerald-700 group-hover:scale-110 group-hover:shadow-lg">
               <Leaf className="h-6 w-6 text-white transition-transform duration-300 group-hover:rotate-12" />
             </div>
-            <span className="text-2xl font-bold transition-colors duration-300 text-slate-50">
+            <span className="text-2xl font-bold transition-colors duration-300 text-slate-950">
               FreshBreath
             </span>
           </Link>
