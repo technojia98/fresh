@@ -1,8 +1,12 @@
-
+import { useState } from "react";
 import { ShoppingCart, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import Header from "@/components/Header";
+import CartSidebar from "@/components/CartSidebar";
+import CheckoutModal from "@/components/CheckoutModal";
+import { useCart } from "@/contexts/CartContext";
+import { useToast } from "@/hooks/use-toast";
 
 const products = [
   {
@@ -62,9 +66,32 @@ const products = [
 ];
 
 const Products = () => {
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const { addToCart } = useCart();
+  const { toast } = useToast();
+
+  const handleAddToCart = (product: any) => {
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image
+    });
+    toast({
+      title: "Added to Cart",
+      description: `${product.name} has been added to your cart.`,
+    });
+  };
+
+  const handleCheckout = () => {
+    setIsCartOpen(false);
+    setIsCheckoutOpen(true);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-green-50">
-      <Header />
+      <Header onCartClick={() => setIsCartOpen(true)} />
       <main className="pt-24">
         <div className="container mx-auto px-4 py-16">
           <div className="text-center mb-16">
@@ -126,6 +153,7 @@ const Products = () => {
                 <CardFooter>
                   <Button 
                     className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
+                    onClick={() => handleAddToCart(product)}
                   >
                     <ShoppingCart className="mr-2 h-4 w-4" />
                     Add to Cart
@@ -154,6 +182,17 @@ const Products = () => {
           </div>
         </div>
       </main>
+
+      <CartSidebar 
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+        onCheckout={handleCheckout}
+      />
+
+      <CheckoutModal 
+        isOpen={isCheckoutOpen}
+        onClose={() => setIsCheckoutOpen(false)}
+      />
     </div>
   );
 };

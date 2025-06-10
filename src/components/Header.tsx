@@ -1,9 +1,16 @@
 
-import { Leaf } from "lucide-react";
+import { Leaf, ShoppingCart } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { useCart } from "@/contexts/CartContext";
+import { Button } from "@/components/ui/button";
 
-const Header = () => {
+interface HeaderProps {
+  onCartClick?: () => void;
+}
+
+const Header = ({ onCartClick }: HeaderProps) => {
   const location = useLocation();
+  const { getTotalItems } = useCart();
 
   return (
     <header className="fixed top-0 w-full bg-white bg-opacity-95 backdrop-blur-sm shadow-sm z-50">
@@ -40,6 +47,20 @@ const Header = () => {
             <a href="#about" className="text-gray-700 hover:text-emerald-600 transition-colors duration-300">About</a>
             <a href="#contact" className="text-gray-700 hover:text-emerald-600 transition-colors duration-300">Contact</a>
           </nav>
+
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="relative"
+            onClick={onCartClick}
+          >
+            <ShoppingCart className="h-5 w-5" />
+            {getTotalItems() > 0 && (
+              <span className="absolute -top-1 -right-1 bg-emerald-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                {getTotalItems()}
+              </span>
+            )}
+          </Button>
         </div>
       </div>
     </header>
