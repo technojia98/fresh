@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { ShoppingCart, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -90,72 +91,88 @@ const Products = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-green-50">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-emerald-100 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-20 left-10 w-32 h-32 bg-emerald-200 rounded-full opacity-20 animate-pulse"></div>
+        <div className="absolute top-40 right-20 w-24 h-24 bg-green-300 rounded-full opacity-30 animate-bounce" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute bottom-40 left-1/4 w-40 h-40 bg-emerald-100 rounded-full opacity-25 animate-pulse" style={{ animationDelay: '2s' }}></div>
+      </div>
+
       <Header onCartClick={() => setIsCartOpen(true)} />
-      <main className="pt-24">
+      <main className="pt-24 relative z-10">
         <div className="container mx-auto px-4 py-16">
-          <div className="text-center mb-16">
-            <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-              Our Premium <span className="text-emerald-600">Mukhwas Collection</span>
+          <div className="text-center mb-16 animate-fade-in">
+            <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4 transition-colors duration-300 hover:text-emerald-600">
+              Our Premium <span className="text-emerald-600 transition-colors duration-300 hover:text-emerald-700">Mukhwas Collection</span>
             </h1>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto transition-colors duration-300 hover:text-gray-800">
               Handcrafted mouth fresheners made with the finest natural ingredients. 
               Each blend offers a unique taste and lasting freshness.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {products.map((product) => (
-              <Card key={product.id} className="overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-white">
-                <div className="relative">
+            {products.map((product, index) => (
+              <Card 
+                key={product.id} 
+                className="overflow-hidden hover:shadow-2xl transition-all duration-500 bg-white transform hover:scale-105 hover:-translate-y-2 group animate-fade-in border-0 shadow-lg"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <div className="relative overflow-hidden">
                   <img 
                     src={product.image} 
                     alt={product.name}
-                    className="w-full h-48 object-cover"
+                    className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
                   />
-                  <div className="absolute top-4 right-4 bg-emerald-600 text-white px-2 py-1 rounded-full text-sm font-semibold">
+                  <div className="absolute top-4 right-4 bg-emerald-600 text-white px-2 py-1 rounded-full text-sm font-semibold transition-all duration-300 group-hover:bg-emerald-700 group-hover:scale-110 animate-pulse">
                     Fresh
                   </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
                 
-                <CardHeader>
+                <CardHeader className="transition-all duration-300 group-hover:bg-emerald-50">
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-xl font-bold text-gray-900">{product.name}</CardTitle>
+                    <CardTitle className="text-xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-emerald-600">{product.name}</CardTitle>
                     <div className="flex items-center">
                       {[...Array(product.rating)].map((_, i) => (
-                        <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
+                        <Star 
+                          key={i} 
+                          className="h-4 w-4 text-yellow-400 fill-current transition-transform duration-300 hover:scale-125" 
+                          style={{ animationDelay: `${i * 0.1}s` }}
+                        />
                       ))}
                     </div>
                   </div>
-                  <CardDescription className="text-gray-600">
+                  <CardDescription className="text-gray-600 transition-colors duration-300 group-hover:text-gray-700">
                     {product.description}
                   </CardDescription>
                 </CardHeader>
 
-                <CardContent>
+                <CardContent className="transition-all duration-300 group-hover:bg-emerald-50">
                   <div className="space-y-3">
                     <div className="flex flex-wrap gap-2">
-                      {product.features.map((feature, index) => (
+                      {product.features.map((feature, featureIndex) => (
                         <span 
-                          key={index}
-                          className="bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full text-xs font-medium"
+                          key={featureIndex}
+                          className="bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full text-xs font-medium transition-all duration-300 hover:bg-emerald-200 hover:scale-105 cursor-pointer"
                         >
                           {feature}
                         </span>
                       ))}
                     </div>
-                    <div className="text-2xl font-bold text-emerald-600">
+                    <div className="text-2xl font-bold text-emerald-600 transition-all duration-300 group-hover:text-emerald-700 group-hover:scale-105">
                       {product.price}
                     </div>
                   </div>
                 </CardContent>
 
-                <CardFooter>
+                <CardFooter className="transition-all duration-300 group-hover:bg-emerald-50">
                   <Button 
-                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white transition-all duration-300 transform hover:scale-105 hover:shadow-lg group/button"
                     onClick={() => handleAddToCart(product)}
                   >
-                    <ShoppingCart className="mr-2 h-4 w-4" />
+                    <ShoppingCart className="mr-2 h-4 w-4 transition-transform duration-300 group-hover/button:rotate-12" />
                     Add to Cart
                   </Button>
                 </CardFooter>
@@ -163,18 +180,18 @@ const Products = () => {
             ))}
           </div>
 
-          <div className="text-center mt-16">
-            <div className="bg-white rounded-2xl p-8 shadow-lg max-w-2xl mx-auto">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">
+          <div className="text-center mt-16 animate-fade-in" style={{ animationDelay: '0.8s' }}>
+            <div className="bg-white rounded-2xl p-8 shadow-xl max-w-2xl mx-auto transition-all duration-500 hover:shadow-2xl hover:scale-105 border-0">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 transition-colors duration-300 hover:text-emerald-600">
                 Custom Blends Available
               </h3>
-              <p className="text-gray-600 mb-6">
+              <p className="text-gray-600 mb-6 transition-colors duration-300 hover:text-gray-800">
                 Looking for something specific? We can create custom mukhwas blends 
                 tailored to your taste preferences and dietary requirements.
               </p>
               <Button 
                 variant="outline" 
-                className="border-emerald-600 text-emerald-600 hover:bg-emerald-50"
+                className="border-emerald-600 text-emerald-600 hover:bg-emerald-50 transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
               >
                 Contact for Custom Orders
               </Button>
