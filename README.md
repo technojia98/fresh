@@ -1,4 +1,3 @@
-
 ## Project info
 
 **URL**: https://lovable.dev/projects/0442ee58-3786-4537-932c-c52d922593ba
@@ -62,6 +61,30 @@ This project is built with:
 ## How can I deploy this project?
 
 Simply open [Lovable](https://lovable.dev/projects/0442ee58-3786-4537-932c-c52d922593ba) and click on Share -> Publish.
+
+### Deploying to Netlify
+
+You can also deploy this project to Netlify.
+
+1.  **Push to GitHub:** Make sure your code is pushed to a GitHub repository.
+2.  **Sign up/Log in to Netlify:** Go to [Netlify](https://www.netlify.com/) and sign up or log in with your GitHub account.
+3.  **New Site from Git:** Click on "Add new site" -> "Import an existing project" and choose your GitHub repository.
+4.  **Build Settings:** The build settings should be automatically detected from the `netlify.toml` file in this repository.
+    *   **Build command:** `npm run build`
+    *   **Publish directory:** `dist`
+5.  **Deploy:** Click on "Deploy site". Netlify will start building and deploying your project.
+
+### Deploying to TinyHost
+
+You can also deploy this project to TinyHost.
+
+1.  **Push to GitHub:** Make sure your code is pushed to a GitHub repository.
+2.  **Sign up/Log in to TinyHost:** Go to [TinyHost](https://tiny.host/) and sign up or log in with your GitHub account.
+3.  **Import Project:** Click on "New Project" and select "Import from Git" to connect your GitHub repository.
+4.  **Build Settings:** The build settings should be automatically detected from the `vercel.json` file in this repository.
+    *   **Build command:** `npm run build`
+    *   **Output directory:** `dist`
+5.  **Deploy:** Click on "Deploy". TinyHost will start building and deploying your project.
 
 ## Can I connect a custom domain to my Lovable project?
 

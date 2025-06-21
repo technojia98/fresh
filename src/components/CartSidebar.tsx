@@ -1,8 +1,8 @@
-
 import React from 'react';
-import { X, Minus, Plus, ShoppingBag } from 'lucide-react';
+import { X, Minus, Plus, ShoppingBag, Trash2, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/contexts/CartContext';
+import { motion } from 'framer-motion';
 
 interface CartSidebarProps {
   isOpen: boolean;
@@ -17,101 +17,129 @@ const CartSidebar = ({ isOpen, onClose, onCheckout }: CartSidebarProps) => {
 
   return (
     <div className="fixed inset-0 z-50 overflow-hidden">
-      <div 
-        className="absolute inset-0 bg-black bg-opacity-50 transition-opacity duration-300" 
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="absolute inset-0 bg-black/30 backdrop-blur-sm transition-opacity duration-300" 
         onClick={onClose} 
       />
-      <div className="absolute right-0 top-0 h-full w-96 bg-white shadow-2xl transform transition-transform duration-500 ease-out animate-slide-in-right">
+      <motion.div 
+        initial={{ x: "100%" }}
+        animate={{ x: 0 }}
+        exit={{ x: "100%" }}
+        transition={{ type: "spring", damping: 25, stiffness: 300 }}
+        className="absolute right-0 top-0 h-full w-80 bg-white shadow-2xl"
+      >
         <div className="flex flex-col h-full">
-          <div className="flex items-center justify-between p-4 border-b transition-colors duration-300 hover:bg-emerald-50">
-            <h2 className="text-lg font-semibold flex items-center transition-colors duration-300 hover:text-emerald-600">
-              <ShoppingBag className="mr-2 h-5 w-5 transition-transform duration-300 hover:scale-110" />
-              Cart ({getTotalItems()})
-            </h2>
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              onClick={onClose}
-              className="transition-all duration-300 hover:scale-110 hover:bg-emerald-100"
-            >
-              <X className="h-4 w-4" />
-            </Button>
+          <div className="bg-black p-4 text-white relative overflow-hidden rounded-b-3xl">
+            <div className="absolute inset-0 bg-gradient-to-r from-black via-gray-900 to-black opacity-50"></div>
+            <div className="relative z-10">
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-medium flex items-center">
+                  <ShoppingBag className="mr-2 h-5 w-5" />
+                  Cart ({getTotalItems()})
+                </h2>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  onClick={onClose}
+                  className="text-white hover:bg-white/20 transition-all duration-300 rounded-full h-8 w-8"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
           </div>
           
           <div className="flex-1 overflow-y-auto p-4">
             {items.length === 0 ? (
-              <div className="text-center text-gray-500 mt-8 animate-fade-in">
-                <ShoppingBag className="h-12 w-12 mx-auto mb-4 text-gray-300 animate-pulse" />
-                <p className="transition-colors duration-300 hover:text-gray-700">Your cart is empty</p>
+              <div className="flex flex-col items-center justify-center h-full text-gray-500 animate-fade-in">
+                <div className="relative mb-4">
+                  <ShoppingBag className="h-12 w-12 text-gray-300 animate-pulse" />
+                  <div className="absolute -inset-3 bg-gray-100 rounded-full blur-xl opacity-50 animate-pulse"></div>
+                </div>
+                <p className="text-base font-medium">Your cart is empty</p>
+                <p className="text-xs mt-1 text-gray-400">Add some products to get started</p>
               </div>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {items.map((item, index) => (
-                  <div 
+                  <motion.div 
                     key={item.id} 
-                    className="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg transition-all duration-300 hover:bg-emerald-50 hover:shadow-md transform hover:scale-105 animate-fade-in"
-                    style={{ animationDelay: `${index * 0.1}s` }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="group bg-white rounded-2xl p-3 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300"
                   >
-                    <img 
-                      src={item.image} 
-                      alt={item.name}
-                      className="w-16 h-16 object-cover rounded transition-transform duration-300 hover:scale-110"
-                    />
-                    <div className="flex-1">
-                      <h3 className="font-medium text-sm transition-colors duration-300 hover:text-emerald-600">{item.name}</h3>
-                      <p className="text-emerald-600 font-semibold transition-all duration-300 hover:scale-105">{item.price}</p>
-                      <div className="flex items-center space-x-2 mt-2">
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="h-6 w-6 transition-all duration-300 hover:scale-110 hover:bg-emerald-100"
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                        >
-                          <Minus className="h-3 w-3" />
-                        </Button>
-                        <span className="text-sm font-medium w-8 text-center transition-all duration-300 hover:scale-110">{item.quantity}</span>
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="h-6 w-6 transition-all duration-300 hover:scale-110 hover:bg-emerald-100"
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                        >
-                          <Plus className="h-3 w-3" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-6 w-6 ml-2 transition-all duration-300 hover:scale-110 hover:bg-red-100"
-                          onClick={() => removeFromCart(item.id)}
-                        >
-                          <X className="h-3 w-3" />
-                        </Button>
+                    <div className="flex items-center space-x-3">
+                      <div className="relative">
+                        <img 
+                          src={item.image} 
+                          alt={item.name}
+                          className="w-16 h-16 object-cover rounded-xl shadow-sm transition-transform duration-300 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-black/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-medium text-gray-900 text-sm truncate group-hover:text-black transition-colors duration-300">{item.name}</h3>
+                        <p className="text-black font-semibold text-sm mt-0.5">₹{item.price.replace('Rs.', '')}</p>
+                        <div className="flex items-center space-x-1.5 mt-2">
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="h-7 w-7 rounded-full hover:bg-gray-100 transition-all duration-300 border-gray-200"
+                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                          >
+                            <Minus className="h-3 w-3" />
+                          </Button>
+                          <span className="w-6 text-center text-sm font-medium">{item.quantity}</span>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="h-7 w-7 rounded-full hover:bg-gray-100 transition-all duration-300 border-gray-200"
+                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          >
+                            <Plus className="h-3 w-3" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-7 w-7 ml-1 text-gray-500 hover:text-black hover:bg-gray-100 transition-all duration-300 rounded-full"
+                            onClick={() => removeFromCart(item.id)}
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             )}
           </div>
           
-          {items.length > 0 && (
-            <div className="border-t p-4 bg-gradient-to-r from-emerald-50 to-green-50 transition-all duration-300">
-              <div className="flex justify-between items-center mb-4">
-                <span className="text-lg font-semibold transition-colors duration-300 hover:text-emerald-600">Total:</span>
-                <span className="text-xl font-bold text-emerald-600 transition-all duration-300 hover:scale-105">
-                  ${getTotalPrice().toFixed(2)}
-                </span>
-              </div>
-              <Button 
-                className="w-full bg-emerald-600 hover:bg-emerald-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
-                onClick={onCheckout}
-              >
-                Proceed to Checkout
-              </Button>
+          <div className="border-t border-gray-100 bg-gray-50 p-4 rounded-t-3xl">
+            <div className="flex justify-between items-center mb-3">
+              <span className="text-base font-medium text-gray-900">Total:</span>
+              <span className="text-xl font-bold text-black">
+                ₹{getTotalPrice().toFixed(2)}
+              </span>
             </div>
-          )}
+            <Button 
+              className="w-full bg-black hover:bg-gray-800 text-white py-4 rounded-xl transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg relative overflow-hidden group"
+              onClick={onCheckout}
+              disabled={items.length === 0}
+            >
+              <span className="relative z-10 flex items-center justify-center text-sm">
+                Checkout
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </span>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+            </Button>
+          </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };
